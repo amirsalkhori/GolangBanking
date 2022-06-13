@@ -1,4 +1,7 @@
 package domain
+import (
+	"_/Users/amir/Desktop/GoWithRealProject/errs"
+)
 
 type Customer struct {
 	Id string `json:"id"`
@@ -12,6 +15,6 @@ type Customer struct {
 //Find All Customers
 type CustomeRepository interface {
 	FindAll() ([]Customer, error)
-	ById(string) (*Customer, error) 
+	ById(string) (*Customer, *errs.AppError) 
 }
 
