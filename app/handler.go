@@ -1,11 +1,14 @@
 package app
 
 import (
+	"_/Users/amir/Desktop/GoWithRealProject/service"
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"log"
 	"net/http"
-	"_/Users/amir/Desktop/GoWithRealProject/service"
+
+	"github.com/gorilla/mux"
 )
 
 type CustomerHandlers struct {
@@ -25,6 +28,19 @@ func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Reque
 		w.Header().Add("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(customers)
+	}
+}
+
+func (ch *CustomerHandlers) getCustomer(w http.ResponseWriter, r *http.Request){
+	vars := mux.Vars(r)
+	id := vars["customer_id"]
+	customer, err := ch.service.GetCustomer(id )
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, err.Error())
+	}else{
+		 w.Header().Add("Content-Type", "application/json")
+		 json.NewEncoder(w).Encode(customer)
 	}
 
 }
