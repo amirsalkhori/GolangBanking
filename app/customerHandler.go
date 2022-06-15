@@ -3,7 +3,7 @@ package app
 import (
 	"_/Users/amir/Desktop/GoWithRealProject/service"
 	"encoding/json"
-	"encoding/xml"
+	// "encoding/xml"
 	// "fmt"
 	"log"
 	"net/http"
@@ -18,16 +18,13 @@ type CustomerHandlers struct {
 func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Request){
 	log.Println("Get all customers")
 
-	customers, _ := ch.service.GetAllCustomer()
+	customers, err := ch.service.GetAllCustomer()
 
-	if r.Header.Get("Content-Type") == "application/xml"{
-		w.Header().Add("Content-Type", "application/xml")
-		w.WriteHeader(http.StatusOK)
-		xml.NewEncoder(w).Encode(customers)
+	if err != nil {
+		writeResponse(w, err.Code, err.AsMessage())
+		// fmt.Fprintf(w, err.Message)
 	}else{
-		w.Header().Add("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(customers)
+		writeResponse(w, http.StatusOK, customers)
 	}
 }
 
