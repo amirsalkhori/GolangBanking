@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: 'banking'
-      MYSQL_USER: 'root'
+      MYSQL_USER: 'rooti'
       MYSQL_PASSWORD: 'changeMe'
       MYSQL_ROOT_PASSWORD: 'changeMe'
     ports:
