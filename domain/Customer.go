@@ -1,15 +1,17 @@
 package domain
+
 import (
+	"_/Users/amir/Desktop/GoWithRealProject/dto"
 	"_/Users/amir/Desktop/GoWithRealProject/errs"
 )
 
 type Customer struct {
-	Id string `json:"id" db:"customer_id"`
-	Name string `json:"name"`
-	City string `json:"city"`
-	Zipcode string `json:"zipcode" db:"zip_code"`
+	Id string `db:"customer_id"`
+	Name string 
+	City string 
+	Zipcode string `db:"zip_code"`
 	DateOfBirth string `json:"dateOfBirth" db:"date_of_birth"`
-	Status string `json:"status"`
+	Status string
 }
 
 //Find All Customers
@@ -18,3 +20,23 @@ type CustomeRepository interface {
 	ById(string) (*Customer, *errs.AppError) 
 }
 
+func (c Customer) statusAsText() string {
+	statusAsText := "active"
+	if c.Status == "0" {
+		statusAsText = "deactive"
+	}
+
+	return statusAsText
+}
+
+func (c Customer) ToDto() dto.CustomerResponse{
+	
+	return dto.CustomerResponse{
+		Id: 	 	 	c.Id,
+		Name: 	 	    c.Name,
+		City: 	 		c.City,
+		Zipcode: 		c.Zipcode,
+		DateOfBirth:  	c.DateOfBirth,
+		Status: 		c.statusAsText(),
+	}
+}
